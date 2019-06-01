@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+</head>
+
+
+<body>
+    <div class="header">
+        <div>test</div>
+        <div>Where is Blake!!</div>
+        <div>test</div>
+    </div>
+    <div class="container">
+        <div id="mapid"></div>
+    </div>
+</body>
+
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+
+<script>
+    navigator.geolocation.getCurrentPosition(function (position) {
+        //Abstract Coords
+        var myPosition = [position.coords.latitude, position.coords.longitude]
+        //Center View
+        var mymap = L.map('mapid').setView(myPosition, 12);
+        //Add map layer
+        L.tileLayer(
+            'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibnVsbGhhcnQiLCJhIjoiY2p3ZGtzbHZmMTc5ODQ0bzZoYm9xN3AyeSJ9.eNKACgEa3FDebGzwR6b8kQ', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoibnVsbGhhcnQiLCJhIjoiY2p3ZGtzbHZmMTc5ODQ0bzZoYm9xN3AyeSJ9.eNKACgEa3FDebGzwR6b8kQ'
+            }).addTo(mymap);
+        //Add current location marker
+        var marker = L.marker(myPosition).addTo(mymap);
+        marker.bindPopup(`<b>Blakes Current Position</b><br>`).openPopup();
+
+    });
+</script>
+
+<style>
+    body {
+        margin: 0%;
+    }
+
+    .header {
+        display: grid;
+        position: fixed;
+        width: 100vw;
+        height: 7vh;
+        background-color: #151515;
+        grid-template-columns: 25vw 50vw 25vw;
+        text-align: center;
+        align-content: space-evenly;
+        color: white;
+    }
+
+    .container {
+        position: relative;
+        bottom: -7vh;
+    }
+
+    #mapid {
+        height: 93vh;
+    }
+</style>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+
+</html>
