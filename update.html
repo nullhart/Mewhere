@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Update Location</title>
+  </head>
+  <script>
+    function postData(url = "", data = {}) {
+      // Default options are marked with *
+      return fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json"
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+      }).then(response => console.log(response.status));
+    } // parses JSON response into native Javascript objects
+
+    function update() {
+      navigator.geolocation.getCurrentPosition(
+        data => {
+          console.log(data.coords);
+          postData("/update", {
+            status: `${data.coords.latitude},${data.coords.longitude}`
+          })
+            .then(data => console.log(JSON.stringify(data))) // JSON-string from `response.json()` call
+            .catch(error => console.error(error));
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+  </script>
+  <body>
+    <button class="button" onclick="update()">Update</button>
+  </body>
+  <style>
+    body {
+      margin: 0px;
+    }
+
+    .button {
+      width: 100vw;
+      height: 100vh;
+      font-size: 20vw;
+      border-radius: 1px;
+    }
+  </style>
+</html>
