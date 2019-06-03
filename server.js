@@ -6,7 +6,7 @@ const adapter = new FileSync("db.json");
 const db = low(adapter);
 const app = express();
 
-const port = 3000;
+const port = 80;
 db.defaults({ status: "" }).write();
 
 app.use(bodyParser.json());
