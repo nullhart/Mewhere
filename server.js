@@ -27,7 +27,7 @@ app.post("/update", (req, res) => {
   //log to console
   console.log({ lat: lat, long: long });
   //respond to requester
-  res.send(`${lat} | ${long}`);
+  res.sendStatus(200);
 });
 
 app.get("/status", (req, res) => {
