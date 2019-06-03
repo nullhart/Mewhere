@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Update Location</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link
       href="http://fonts.googleapis.com/css?family=Josefin+Sans:700|Amatic+SC:700"
       rel="stylesheet"
@@ -70,7 +71,7 @@
 
   <body>
     <div class="progress"></div>
-    <span id="progressBar" class="progressProgress" style="height: 1%"
+    <span id="progressBar" class="progressProgress" style="height: 0%"
       ><span id="text">Location Updated</span></span
     >
     <div class="container">
@@ -79,8 +80,7 @@
   </body>
   <style>
     body {
-      font-family: "Amatic SC", cursive;
-      font-weight: 700;
+      font-family: "Amatic SC";
 
       /* width: 100px;
       height: 100px; */
@@ -132,13 +132,12 @@
       border-radius: 30px;
     }
     .button {
+      position: relative;
+      overflow: hidden;
       width: 200px;
       height: 100px;
-      font-size: 60pt;
-
-      font-family: "Amatic SC", cursive;
-      font-weight: 700;
-      border-radius: 0px;
+      font-size: 50px;
+      font-family: "Amatic SC";
     }
   </style>
 </html>
