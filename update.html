@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Update Location</title>
+    <link
+      href="http://fonts.googleapis.com/css?family=Josefin+Sans:700|Amatic+SC:700"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
   <script>
     function postData(url = "", data = {}) {
@@ -21,20 +26,40 @@
         redirect: "follow", // manual, *follow, error
         referrer: "no-referrer", // no-referrer, *client
         body: JSON.stringify(data) // body data type must match "Content-Type" header
-      }).then(response => console.log(response.status));
+      });
     } // parses JSON response into native Javascript objects
 
     function update() {
+      document.getElementById("progressBar").style = "height: 50%;";
       navigator.geolocation.getCurrentPosition(
         data => {
           console.log(data.coords);
           postData("/update", {
             status: `${data.coords.latitude},${data.coords.longitude}`
-          })
-            .then(data => {
-              alert("Location Updated!!");
-            })
-            .catch(error => alert(error));
+          }).then(data => {
+            if (data.status != 200) {
+              //   alert(error);
+              document.getElementById("progressBar").style =
+                "border-top-left-radius: 0px; border-top-right-radius: 0px;height: 100%; background-color: red;";
+              setTimeout(() => {
+                document.getElementById(
+                  "text"
+                ).innerHTML = `Location Update Failed <br>
+                error code ${data.status}`;
+                document.getElementById("text").style = "opacity: 1;";
+              }, 1000);
+              return;
+            }
+            console.log(`${data}`);
+            document.getElementById("progressBar").style = "height: 100%;";
+            setTimeout(() => {
+              document.getElementById("text").style = "opacity: 1;";
+              document.getElementById("progressBar").style =
+                "border-top-left-radius: 0px; border-top-right-radius: 0px;height: 100%;";
+            }, 1000);
+
+            console.log("Location Updated!!");
+          });
         },
         err => {
           console.log(err);
@@ -42,18 +67,77 @@
       );
     }
   </script>
+
   <body>
-    <button class="button" onclick="update()">Update</button>
+    <div class="progress"></div>
+    <span id="progressBar" class="progressProgress" style="height: 1%"
+      ><span id="text">Location Updated</span></span
+    >
+    <div class="container">
+      <button class="button" onclick="update()"><span>Update</span></button>
+    </div>
   </body>
   <style>
     body {
-      margin: 0px;
+      font-family: "Amatic SC", cursive;
+      font-weight: 700;
+
+      /* width: 100px;
+      height: 100px; */
     }
 
+    .progress {
+      height: 100vh;
+      width: 100vw;
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      background: #555;
+      z-index: -1;
+    }
+    .progressProgress {
+      height: 0vh;
+      width: 100vw;
+      border-top-left-radius: 100px;
+      border-top-right-radius: 100px;
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+
+      z-index: 1;
+      text-align: center;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgb(43, 194, 83);
+      background-image: linear-gradient(
+        center bottom,
+        rgb(43, 194, 83) 37%,
+        rgb(84, 240, 84) 69%
+      );
+      font-size: 10vw;
+      transition-duration: 1.6s;
+      will-change: auto;
+    }
+    .progressProgress > span {
+      opacity: 0;
+      transition-duration: 1s;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+    }
     .button {
-      width: 80vw;
-      height: 80vh;
-      font-size: 20vw;
+      width: 200px;
+      height: 100px;
+      font-size: 60pt;
+
+      font-family: "Amatic SC", cursive;
+      font-weight: 700;
       border-radius: 0px;
     }
   </style>
