@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>Document</title>
+    <title>Where's Blake</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
       integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
       crossorigin=""
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap"
+      rel="stylesheet"
     />
   </head>
 
@@ -59,28 +63,30 @@
   <style>
     body {
       margin: 0%;
+      font-family: "Amatic SC";
     }
 
     .header {
       display: grid;
       position: fixed;
       width: 100vw;
-      height: 5vh;
+
       background-color: #af3e4d;
       grid-template-columns: 25vw 50vw 25vw;
       text-align: center;
-
+      z-index: 1;
       color: white;
+      height: 60px;
     }
 
     .header-text {
       margin: auto;
-      font-size: 20pt;
+      font-size: 30pt;
     }
 
     .container {
       position: relative;
-      bottom: -5vh;
+      bottom: -60px;
     }
 
     #mapid {
