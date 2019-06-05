@@ -17,15 +17,11 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 app.get("/update", (req, res) => res.sendFile(__dirname + "/update.html"));
 
 app.post("/update", (req, res) => {
-  //split string into lat and long
-  var coord = req.body.status.split(",");
-  var lat = coord[0];
-  var long = coord[1];
   //update status in DB
-  db.set("status", { lat: lat, long: long }).write();
+  db.set("status", { lat: req.body.lat, long: req.body.long }).write();
 
   //log to console
-  console.log({ lat: lat, long: long });
+  console.log({ lat: req.body.lat, long: req.body.long });
   //respond to requester
   res.sendStatus(200);
 });
