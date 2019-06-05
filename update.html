@@ -34,7 +34,7 @@
       navigator.geolocation.getCurrentPosition(
         data => {
           //problem here
-          console.log(JSON.stringify(coords));
+          console.log(JSON.stringify(data.coords));
           postData("/update", {
             status: {
               lat: data.coords.latitude,
