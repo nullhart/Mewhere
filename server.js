@@ -23,7 +23,7 @@ app.post("/update", (req, res) => {
   //log to console
   console.log({ lat: req.body.lat, long: req.body.long });
   //respond to requester
-  res.sendStatus(200);
+  res.status(200).send("Location Updated Successfully!");
 });
 
 app.get("/status", (req, res) => {
