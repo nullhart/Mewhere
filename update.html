@@ -35,10 +35,10 @@
         data => {
           console.log(data.coords);
           postData("/update", {
-            status: `{
-              "lat": data.coords.latitude,
-              "long": data.coords.longitude
-            }`
+            status: {
+              lat: data.coords.latitude,
+              long: data.coords.longitude
+            }
           }).then(data => {
             if (data.status != 200) {
               //   alert(error);
