@@ -18,10 +18,9 @@ app.get("/update", (req, res) => res.sendFile(__dirname + "/update.html"));
 
 app.post("/update", (req, res) => {
   //update status in DB
-  db.set("status", { lat: req.body.lat, long: req.body.long }).write();
+  console.log(req.body);
+  db.set("status", req.body).write();
 
-  //log to console
-  console.log({ lat: req.body.lat, long: req.body.long });
   //respond to requester
   res.status(200).send("Location Updated Successfully!");
 });
