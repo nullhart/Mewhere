@@ -39,7 +39,7 @@
     fetch("/status").then(async res => {
       var coords = await res.json();
       //Abstract Coords
-      var myPosition = [coords.lat, coords.long];
+      var myPosition = [coords.status.lat, coords.status.long];
       //Center View
       var mymap = L.map("mapid").setView(myPosition, 12);
       //Add map layer
