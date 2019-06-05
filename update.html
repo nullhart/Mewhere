@@ -33,7 +33,8 @@
       document.getElementById("progressBar").style = "height: 50%;";
       navigator.geolocation.getCurrentPosition(
         data => {
-          console.log(data.coords);
+          //problem here
+          console.log(JSON.stringify(coords));
           postData("/update", {
             status: {
               lat: data.coords.latitude,
