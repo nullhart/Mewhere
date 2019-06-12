@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(express.static("assets"));
 
 //Setup DB
-const connectString = process.env.MongoString || PROD_MONGODB;
+const connectString = process.env.PROD_MONGODB;
 const MongoClient = require("mongodb").MongoClient;
 const client = new MongoClient(connectString, {
   useNewUrlParser: true
