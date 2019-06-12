@@ -36,10 +36,8 @@
           //problem here
           console.log(JSON.stringify(data.coords));
           postData("/update", {
-            status: {
-              lat: data.coords.latitude,
-              long: data.coords.longitude
-            }
+            lat: data.coords.latitude,
+            long: data.coords.longitude
           }).then(data => {
             if (data.status != 200) {
               //   alert(error);
@@ -141,8 +139,10 @@
       height: 100px;
       font-size: 50px;
       font-family: "Amatic SC";
+      background-color: white;
       -webkit-appearance: none;
-      -webkit-border-radius: 0;
+      -webkit-border-radius: 0px;
+      border-radius: 0px;
     }
   </style>
 </html>

@@ -1,33 +1,45 @@
 const express = require("express");
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
+require("dotenv").config();
 var bodyParser = require("body-parser");
-const adapter = new FileSync("db.json");
-const db = low(adapter);
 const app = express();
-
 var port = process.env.PORT || 3000;
-db.defaults({ status: "" }).write();
 
 app.use(bodyParser.json());
-
 app.use(express.static("assets"));
 
+//Setup DB
+const connectString = process.env.MongoString;
+const MongoClient = require("mongodb").MongoClient;
+const client = new MongoClient(connectString, {
+  useNewUrlParser: true
+});
+
+var database;
+var db = client.connect().then(db => {});
+
+db.then(success => {
+  console.log("connected");
+  database = client.db("heroku_wpdrx8dh");
+  app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+});
+
+//Routes
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 app.get("/update", (req, res) => res.sendFile(__dirname + "/update.html"));
 
 app.post("/update", (req, res) => {
   //update status in DB
   console.log(req.body);
-  db.set("status", req.body).write();
-
+  // db.set("status", req.body).write();
+  database
+    .collection("state")
+    .findOneAndUpdate({ state: Object }, { $set: { state: req.body } });
   //respond to requester
   res.status(200).send("Location Updated Successfully!");
 });
 
 app.get("/status", (req, res) => {
-  var status = db.get("status").value();
-  res.send(status);
+  database.collection("state").findOne({ state: Object }, (err, result) => {
+    res.send(result);
+  });
 });
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
