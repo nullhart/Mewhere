@@ -59,12 +59,17 @@
       var marker = L.marker(myPosition).addTo(mymap);
       marker.bindPopup(`<b>Blakes Current Position</b><br>`).openPopup();
     });
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
   </script>
 
   <style>
     body {
       margin: 0%;
       font-family: "Amatic SC";
+      font-weight: 1000;
     }
 
     .header {
@@ -73,6 +78,7 @@
       width: 100vw;
       background-color: #85144b;
       grid-template-columns: 25vw 50vw 25vw;
+      grid-template-rows: 60px;
       text-align: center;
       z-index: 1;
       color: white;
@@ -81,7 +87,9 @@
 
     .header-text {
       margin: auto;
-      font-size: 30pt;
+      padding: 0px;
+      font-size: 40pt;
+      line-height: 60px;
     }
 
     .container {
