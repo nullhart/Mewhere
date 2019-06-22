@@ -7,7 +7,9 @@ const app = express();
 var port = process.env.PORT || 3000;
 
 
-app.use(enforce.HTTPS());
+app.use(enforce.HTTPS({
+  trustProtoHeader: true
+}))
 app.use(bodyParser.json());
 app.use(express.static("assets"));
 
