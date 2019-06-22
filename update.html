@@ -1,148 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Update Location</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <script>
-    function postData(url = "", data = {}) {
-      // Default options are marked with *
-      return fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json"
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // no-referrer, *client
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-      });
-    } // parses JSON response into native Javascript objects
 
-    function update() {
-      document.getElementById("progressBar").style = "height: 50%;";
-      navigator.geolocation.getCurrentPosition(
-        data => {
-          postData("/update", {
-            lat: data.coords.latitude,
-            long: data.coords.longitude
-          }).then(data => {
-            if (data.status != 200) {
-              //   alert(error);
-              document.getElementById("progressBar").style =
-                "border-top-left-radius: 0px; border-top-right-radius: 0px;height: 100%; background-color: red;";
-              setTimeout(() => {
-                document.getElementById(
-                  "text"
-                ).innerHTML = `Location Update Failed <br>
-                error code ${data.status}`;
-                document.getElementById("text").style = "opacity: 1;";
-              }, 1000);
-              return;
-            }
-            console.log(`${data}`);
-            document.getElementById("progressBar").style = "height: 100%;";
-            setTimeout(() => {
-              document.getElementById("text").style = "opacity: 1;";
-              document.getElementById("progressBar").style =
-                "border-top-left-radius: 0px; border-top-right-radius: 0px;height: 100%;";
-            }, 1000);
-
-            console.log("Location Updated!!");
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Update Location</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <script async src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.9/pwacompat.min.js"
+    integrity="sha384-VcI6S+HIsE80FVM1jgbd6WDFhzKYA0PecD/LcIyMQpT4fMJdijBh0I7Iblaacawc" crossorigin="anonymous">
   </script>
+  <link href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap" rel="stylesheet" />
 
-  <body>
-    <div class="progress"></div>
-    <span id="progressBar" class="progressProgress" style="height: 0%"
-      ><span id="text">Location Updated</span></span
-    >
-    <div class="container">
-      <button class="button" onclick="update()"><span>Update</span></button>
-    </div>
-  </body>
-  <style>
-    body {
-      font-family: "Amatic SC";
+</head>
+<script>
+  function postData(url = "", data = {}) {
+    // Default options are marked with *
+    return fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+  } // parses JSON response into native Javascript objects
 
-      /* width: 100px;
+  function update() {
+    document.getElementById("progressBar").style = "height: 50%;";
+    navigator.geolocation.getCurrentPosition(
+      data => {
+        postData("/update", {
+          lat: data.coords.latitude,
+          long: data.coords.longitude
+        }).then(data => {
+          if (data.status != 200) {
+            //   alert(error);
+            document.getElementById("progressBar").style =
+              "border-top-left-radius: 0px; border-top-right-radius: 0px;height: 100%; background-color: red;";
+            setTimeout(() => {
+              document.getElementById(
+                "text"
+              ).innerHTML = `Location Update Failed <br>
+                error code ${data.status}`;
+              document.getElementById("text").style = "opacity: 1;";
+            }, 1000);
+            return;
+          }
+          console.log(`${data}`);
+          document.getElementById("progressBar").style = "height: 100%;";
+          setTimeout(() => {
+            document.getElementById("text").style = "opacity: 1;";
+            document.getElementById("progressBar").style =
+              "border-top-left-radius: 0px; border-top-right-radius: 0px;height: 100%;";
+          }, 1000);
+
+          console.log("Location Updated!!");
+        });
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+</script>
+
+<body>
+  <div class="progress"></div>
+  <span id="progressBar" class="progressProgress" style="height: 0%"><span id="text">Location Updated</span></span>
+  <div class="container">
+    <button class="button" onclick="update()"><span>Update</span></button>
+  </div>
+</body>
+<style>
+  body {
+    font-family: "Amatic SC";
+
+    /* width: 100px;
       height: 100px; */
-    }
+  }
 
-    .progress {
-      height: 100vh;
-      width: 100vw;
-      position: absolute;
-      left: 0px;
-      bottom: 0px;
-      background: #555;
-      z-index: -1;
-    }
-    .progressProgress {
-      height: 0vh;
-      width: 100vw;
-      border-top-left-radius: 100px;
-      border-top-right-radius: 100px;
-      position: fixed;
-      left: 0px;
-      bottom: 0px;
+  .progress {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background: #555;
+    z-index: -1;
+  }
 
-      z-index: 1;
-      text-align: center;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgb(43, 194, 83);
-      background-image: linear-gradient(
-        center bottom,
+  .progressProgress {
+    height: 0vh;
+    width: 100vw;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+
+    z-index: 1;
+    text-align: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(43, 194, 83);
+    background-image: linear-gradient(center bottom,
         rgb(43, 194, 83) 37%,
-        rgb(84, 240, 84) 69%
-      );
-      font-size: 10vw;
-      transition-duration: 1.6s;
-      will-change: auto;
-    }
-    .progressProgress > span {
-      opacity: 0;
-      transition-duration: 1s;
-    }
+        rgb(84, 240, 84) 69%);
+    font-size: 10vw;
+    transition-duration: 1.6s;
+    will-change: auto;
+  }
 
-    .container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 30px;
-    }
-    .button {
-      position: relative;
-      overflow: hidden;
-      width: 200px;
-      height: 100px;
-      font-size: 50px;
-      font-family: "Amatic SC";
-      font-weight: 1000;
-      font-size: 60pt;
-      background-color: white;
-      -webkit-appearance: none;
-      -webkit-border-radius: 0px;
-      border-radius: 0px;
-    }
-  </style>
+  .progressProgress>span {
+    opacity: 0;
+    transition-duration: 1s;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+  }
+
+  .button {
+    position: relative;
+    overflow: hidden;
+    width: 200px;
+    height: 100px;
+    font-size: 50px;
+    font-family: "Amatic SC";
+    font-weight: 1000;
+    font-size: 60pt;
+    background-color: white;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+  }
+</style>
+
 </html>
