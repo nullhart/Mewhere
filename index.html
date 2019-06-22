@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#85144b" />
+    <link rel="manifest" href="manifest.json" />
     <title>Where's Blake</title>
     <link
       rel="stylesheet"
@@ -59,21 +61,26 @@
       var marker = L.marker(myPosition).addTo(mymap);
       marker.bindPopup(`<b>Blakes Current Position</b><br>`).openPopup();
     });
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
   </script>
 
   <style>
     body {
       margin: 0%;
       font-family: "Amatic SC";
+      font-weight: 1000;
     }
 
     .header {
       display: grid;
       position: fixed;
       width: 100vw;
-
-      background-color: #af3e4d;
+      background-color: #85144b;
       grid-template-columns: 25vw 50vw 25vw;
+      grid-template-rows: 60px;
       text-align: center;
       z-index: 1;
       color: white;
@@ -82,7 +89,9 @@
 
     .header-text {
       margin: auto;
-      font-size: 30pt;
+      padding: 0px;
+      font-size: 40pt;
+      line-height: 60px;
     }
 
     .container {

@@ -28,9 +28,6 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 app.get("/update", (req, res) => res.sendFile(__dirname + "/update.html"));
 
 app.post("/update", (req, res) => {
-  //update status in DB
-  console.log(req.body);
-  // db.set("status", req.body).write();
   database
     .collection("state")
     .findOneAndUpdate({ state: Object }, { $set: { state: req.body } });
