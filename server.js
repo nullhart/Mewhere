@@ -1,9 +1,15 @@
 const express = require("express");
 require("dotenv").config();
 var bodyParser = require("body-parser");
+var enforce = require('express-sslify');
 const app = express();
+
 var port = process.env.PORT || 3000;
 
+
+app.use(enforce.HTTPS({
+  trustProtoHeader: true
+}))
 app.use(bodyParser.json());
 app.use(express.static("assets"));
 
@@ -30,13 +36,21 @@ app.get("/update", (req, res) => res.sendFile(__dirname + "/update.html"));
 app.post("/update", (req, res) => {
   database
     .collection("state")
-    .findOneAndUpdate({ state: Object }, { $set: { state: req.body } });
+    .findOneAndUpdate({
+      state: Object
+    }, {
+      $set: {
+        state: req.body
+      }
+    });
   //respond to requester
   res.status(200).send("Location Updated Successfully!");
 });
 
 app.get("/status", (req, res) => {
-  database.collection("state").findOne({ state: Object }, (err, result) => {
+  database.collection("state").findOne({
+    state: Object
+  }, (err, result) => {
     res.send(result);
   });
 });
