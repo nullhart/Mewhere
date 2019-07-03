@@ -19,14 +19,18 @@
 </head>
 
 <body>
+    <div class="hide" id="banner"><span>Blake's Out on Vacation</span></div>
   <div class="header">
     <div class="left-nav"></div>
     <div class="header-text">Where's Blake!</div>
     <div></div>
   </div>
-  <div class="container">
+  <div class="container" id="container">
     <div id="mapid"></div>
   </div>
+ 
+
+
 </body>
 
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
@@ -37,8 +41,19 @@
   fetch("/status").then(async res => {
     var coords = await res.json();
     //Abstract Coords
-    console.log(coords);
-    var myPosition = [coords.state.lat, coords.state.long];
+
+
+    if (coords.state.state == 'PTO') {
+      document.getElementById('container').classList.add('PTO')
+      document.getElementById('banner').classList.remove('hide')
+      document.getElementById('banner').classList.add('banner')
+
+
+      var myPosition = [39.73715, -104.989174]
+    } else {
+      var myPosition = [coords.state.lat, coords.state.long];
+    }
+
     //Center View
     var mymap = L.map("mapid").setView(myPosition, 12);
     //Add map layer
@@ -66,6 +81,33 @@
     font-family: "Amatic SC";
     font-weight: 1000;
   }
+
+  .PTO {
+    filter: blur(10px);
+  }
+  .hide {
+    display: none;
+  }
+
+
+  .banner {
+    display: flex;
+    position: fixed;
+    height: 100%;
+    width: 100vw;
+    margin: auto;
+    z-index: 1
+  }
+  .banner > span {
+    margin: auto;
+    font-size: 12vw;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    filter: drop-shadow(3px 3px 10px white)
+  }
+
+
 
   .header {
     display: grid;

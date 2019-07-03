@@ -28,6 +28,10 @@
     });
   } // parses JSON response into native Javascript objects
 
+  function PTO() {
+    postData('/update', {state: "PTO"})
+  }
+
   function update() {
     document.getElementById("progressBar").style = "height: 50%;";
     navigator.geolocation.getCurrentPosition(
@@ -72,6 +76,8 @@
   <span id="progressBar" class="progressProgress" style="height: 0%"><span id="text">Location Updated</span></span>
   <div class="container">
     <button class="button" onclick="update()"><span>Update</span></button>
+    <button class="button" onclick="PTO()"><span>PTO</span></button>
+
   </div>
 </body>
 <style>
