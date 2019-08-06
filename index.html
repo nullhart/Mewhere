@@ -19,14 +19,14 @@
 </head>
 
 <body>
-    <div class="hide" id="banner"><span>Blake's Out on Vacation</span></div>
+  <div class="hide" id="banner"><span>Blake's Out on Vacation</span></div>
   <div class="header">
     <div class="header-text">Where's Blake!</div>
   </div>
   <div class="container" id="container">
     <div id="mapid"></div>
   </div>
- 
+
 
 
 </body>
@@ -39,6 +39,16 @@
   fetch("/status").then(async res => {
     var coords = await res.json();
     //Abstract Coords
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    let today = new Date(coords.state.date)
+
+    let date = `${months[today.getMonth()]} ${today.getDate()}`;
+    let time = `${today.getHours()}:${today.getMinutes()}`;
+    let dateTime = `${date}  at  ${time}`;
+
+
 
 
     if (coords.state.state == 'PTO') {
@@ -65,7 +75,10 @@
     ).addTo(mymap);
     //Add current location marker
     var marker = L.marker(myPosition).addTo(mymap);
-    marker.bindPopup(`<b>Blakes Current Position</b><br>`).openPopup();
+    marker.bindPopup(
+        `<div style="text-align: center;" >Blake's Current Position <br> <div class="bubble">Last Update: ${dateTime}</div></div>`
+      )
+      .openPopup();
   });
 
   if ("serviceWorker" in navigator) {
@@ -80,9 +93,21 @@
     font-weight: 1000;
   }
 
+  .bubble {
+    background-color: lightskyblue;
+    border-radius: 10px;
+    padding: 4px;
+    margin: 10px;
+  }
+
+  .leaflet-popup-content-wrapper {}
+
+
+
   .PTO {
     filter: blur(10px);
   }
+
   .hide {
     display: none;
   }
@@ -96,7 +121,8 @@
     margin: auto;
     z-index: 1
   }
-  .banner > span {
+
+  .banner>span {
     margin: auto;
     font-size: 12vw;
     background-color: white;

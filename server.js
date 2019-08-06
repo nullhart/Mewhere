@@ -7,9 +7,9 @@ const app = express();
 var port = process.env.PORT || 3000;
 
 
-app.use(enforce.HTTPS({
-  trustProtoHeader: true
-}))
+// app.use(enforce.HTTPS({
+//   trustProtoHeader: true
+// }))
 app.use(bodyParser.json());
 app.use(express.static("assets"));
 
@@ -21,7 +21,7 @@ const client = new MongoClient(connectString, {
 });
 
 var database;
-var db = client.connect().then(db => {});
+var db = client.connect().then(db => { });
 
 db.then(success => {
   console.log("connected");
@@ -34,15 +34,19 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 app.get("/update", (req, res) => res.sendFile(__dirname + "/update.html"));
 
 app.post("/update", (req, res) => {
+
+  let data = req.body
+  data.date = new Date()
+
   database
     .collection("state")
     .findOneAndUpdate({
       state: Object
     }, {
-      $set: {
-        state: req.body
-      }
-    });
+        $set: {
+          state: req.body
+        }
+      });
   //respond to requester
   res.status(200).send("Location Updated Successfully!");
 });
