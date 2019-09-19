@@ -76,7 +76,7 @@ db.then(success => {
   console.log("connected");
   database = client.db("heroku_wpdrx8dh");
   // app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-  http.listen(3000, function () {
+  http.listen(port, function () {
     console.log('listening on *:3000');
   });
 });
