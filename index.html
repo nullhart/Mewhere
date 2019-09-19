@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <div class="hide" id="banner"><span>Blake's Out of Office</span></div>
+  <div class="hide" id="banner"><span>Blake's Out of Office</span></div>
   <div class="header">
     <div class="header-text">Where's Blake!</div>
   </div>
@@ -34,52 +34,62 @@
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
   crossorigin=""></script>
-
+<script src="/socket.io-client/dist/socket.io.js"></script>
 <script>
-  fetch("/status").then(async res => {
-    var coords = await res.json();
-    //Abstract Coords
+  var socket = io();
+  getLocation()
+  socket.on('locationUpdate', function () {
+    console.log('new location data available')
+    location.reload();
+  })
 
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function getLocation() {
+    fetch("/status").then(async res => {
+      var coords = await res.json();
+      //Abstract Coords
 
-    let today = new Date(coords.state.date)
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    let date = `${months[today.getMonth()]} ${today.getDate()}`;
-    let time = `${today.getHours()}:${today.getMinutes()}`;
-    let dateTime = `${date}  at  ${time}`;
+      let today = new Date(coords.state.date)
 
-
-
-
-    if (coords.state.state == 'PTO') {
-      document.getElementById('container').classList.add('PTO')
-      document.getElementById('banner').classList.remove('hide')
-      document.getElementById('banner').classList.add('banner')
+      let date = `${months[today.getMonth()]} ${today.getDate()}`;
+      let time = `${today.getHours()}:${today.getMinutes()}`;
+      let dateTime = `${date}  at  ${time}`;
 
 
-      var myPosition = [39.73715, -104.989174]
-    } else {
-      var myPosition = [coords.state.lat, coords.state.long];
-    }
 
-    //Center View
-    var mymap = L.map("mapid").setView(myPosition, 12);
-    //Add map layer
-    L.tileLayer(
-      "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibnVsbGhhcnQiLCJhIjoiY2p3ZGtzbHZmMTc5ODQ0bzZoYm9xN3AyeSJ9.eNKACgEa3FDebGzwR6b8kQ", {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: "mapbox.streets",
-        accessToken: "pk.eyJ1IjoibnVsbGhhcnQiLCJhIjoiY2p3ZGtzbHZmMTc5ODQ0bzZoYm9xN3AyeSJ9.eNKACgEa3FDebGzwR6b8kQ"
+
+      if (coords.state.state == 'PTO') {
+        document.getElementById('container').classList.add('PTO')
+        document.getElementById('banner').classList.remove('hide')
+        document.getElementById('banner').classList.add('banner')
+
+
+        var myPosition = [39.73715, -104.989174]
+      } else {
+        var myPosition = [coords.state.lat, coords.state.long];
       }
-    ).addTo(mymap);
-    //Add current location marker
-    var marker = L.marker(myPosition).addTo(mymap);
-    marker.bindPopup(
-        `<div style="text-align: center;" >Blake's Current Position <br> <div class="bubble">Last Update: ${dateTime}</div></div>`
-      )
-      .openPopup();
-  });
+
+      //Center View
+      var mymap = L.map("mapid").setView(myPosition, 12);
+      //Add map layer
+      L.tileLayer(
+        "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibnVsbGhhcnQiLCJhIjoiY2p3ZGtzbHZmMTc5ODQ0bzZoYm9xN3AyeSJ9.eNKACgEa3FDebGzwR6b8kQ", {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: "mapbox.streets",
+          accessToken: "pk.eyJ1IjoibnVsbGhhcnQiLCJhIjoiY2p3ZGtzbHZmMTc5ODQ0bzZoYm9xN3AyeSJ9.eNKACgEa3FDebGzwR6b8kQ"
+        }
+      ).addTo(mymap);
+      //Add current location marker
+      var marker = L.marker(myPosition).addTo(mymap);
+      marker.bindPopup(
+          `<div style="text-align: center;" >Blake's Current Position <br> <div class="bubble">Last Update: ${dateTime}</div></div>`
+        )
+        .openPopup();
+    });
+  }
+
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
